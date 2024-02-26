@@ -18,7 +18,7 @@
     </style>
 </head>
 <body>
-<h2>Tablas de Multiplicar</h2>
+    <h2>Tablas de Multiplicar</h2>
     <form method="post">
         <label for="numero">Ingrese un numero para la tabla:</label>
         <input type="number" min="1" name="numero" required>
@@ -65,36 +65,39 @@
     }
     ?>
     
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["calificar"])) {
-        $numero = $_POST["numero"];
-        $rango_inicio = $_POST["rango_inicio"];
-        $rango_fin = $_POST["rango_fin"];
-        
-        $min = min($rango_inicio, $rango_fin);
-        $max = max($rango_inicio, $rango_fin);
+ <?php
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["calificar"])) {
+    $numero = $_POST["numero"];
+    $rango_inicio = $_POST["rango_inicio"];
+    $rango_fin = $_POST["rango_fin"];
+    
+    $min = min($rango_inicio, $rango_fin);
+    $max = max($rango_inicio, $rango_fin);
 
-        echo "<h3>Respuestas correctas:</h3>";
-        echo "<ul>";
-        $respuestas_correctas = 0;
-        foreach (range($min, $max) as $i) {
-            echo "<li>$numero x $i = " . ($numero * $i);
-            if ($_POST["respuesta"][$i] == $numero * $i) {
-                echo " <span class='correcta'>(Correcta)</span>";
-                $respuestas_correctas++;
-            }
-            echo "</li>";
+    echo "<h3>Respuestas:</h3>";
+    echo "<ul>";
+    $respuestas_correctas = 0;
+    foreach (range($min, $max) as $i) {
+        echo "<li>$numero x $i = " . ($numero * $i) . " (Respuesta correcta)";
+        if ($_POST["respuesta"][$i] == $numero * $i) {
+            echo " <span class='correcta'>(Correcta)</span>";
+            $respuestas_correctas++;
+        } else {
+            echo " <span class='incorrecta'>(Incorrecta {$_POST['respuesta'][$i]})</span>";
         }
-        echo "</ul>";
-
-        echo "<h3>Cantidad de aciertos:</h3>";
-        echo "<p>$respuestas_correctas / " . ($max - $min + 1) . "</p>";
-
-        echo "<form method='post'>";
-        echo "<input type='submit' name='submit' value='Generar nueva tabla'>";
-        echo "</form>";
+        echo "</li>";
     }
-    ?>
+    echo "</ul>";
+
+    echo "<h3>Cantidad de aciertos:</h3>";
+    echo "<p>$respuestas_correctas / " . ($max - $min + 1) . "</p>";
+
+    echo "<form method='post'>";
+    echo "<input type='submit' name='submit' value='Generar nueva tabla'>";
+    echo "</form>";
+}
+?>
     
 </body>
 </html>
+
