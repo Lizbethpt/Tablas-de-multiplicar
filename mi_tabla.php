@@ -65,7 +65,7 @@
     }
     ?>
     
- <?php
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["calificar"])) {
     $numero = $_POST["numero"];
     $rango_inicio = $_POST["rango_inicio"];
@@ -77,27 +77,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["calificar"])) {
     echo "<h3>Respuestas:</h3>";
     echo "<ul>";
     $respuestas_correctas = 0;
+    $total_preguntas = 0;
     foreach (range($min, $max) as $i) {
         echo "<li>$numero x $i = " . ($numero * $i) . " (Respuesta correcta)";
+        $total_preguntas++;
         if ($_POST["respuesta"][$i] == $numero * $i) {
             echo " <span class='correcta'>(Correcta)</span>";
             $respuestas_correctas++;
         } else {
-            echo " <span class='incorrecta'>(Incorrecta {$_POST['respuesta'][$i]})</span>";
+            echo " <span class='incorrecta'>(Incorrecta - {$_POST['respuesta'][$i]})</span>";
         }
         echo "</li>";
     }
     echo "</ul>";
 
     echo "<h3>Cantidad de aciertos:</h3>";
-    echo "<p>$respuestas_correctas / " . ($max - $min + 1) . "</p>";
+    echo "<p>$respuestas_correctas / $total_preguntas</p>";
+
+  
+    $porcentaje_correctas = ($respuestas_correctas / $total_preguntas) * 100;
+    echo "<h3>Promedio de calificacion:</h3>";
+    echo "<p>$porcentaje_correctas%</p>";
 
     echo "<form method='post'>";
     echo "<input type='submit' name='submit' value='Generar nueva tabla'>";
     echo "</form>";
 }
 ?>
-    
+
 </body>
 </html>
-
